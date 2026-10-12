@@ -16,7 +16,6 @@ load_dotenv()                   # Reads OPENAI_API_KEY from .env
 client = OpenAI()
 # Create a client object to send requests to OpenAI.
 # It automatically looks for the OPENAI_API_KEY environment variable.
-# IMPORTANT: Never write your secret API key directly in this file.
 
 
 # ============================================================
@@ -69,16 +68,13 @@ The result must be ready for text-to-speech generation.
 # ============================================================
 
 def create_script(transcript):
-    # def = define a function.
+   
     # create_script = function name used by main.py.
     # transcript = input parameter containing cleaned text.
-    #
+    
     # INPUT:  transcript (string)
     # OUTPUT: podcast script (string)
-    #
-    # This function does NOT read PDFs or generate audio.
-    # Those tasks belong to other modules.
-
+    
     # --------------------------------------------------------
     # 4A. VALIDATE THE INPUT
     # --------------------------------------------------------
@@ -104,29 +100,6 @@ def create_script(transcript):
         input=transcript
     )
 
-    # client.responses.create() calls the Responses API.
-    #
-    # model = which LLM processes our transcript.
-    # instructions = how the LLM should behave and write.
-    # input = the actual transcript to transform.
-    #
-    # The request is sent to OpenAI's servers.
-    # The model generates a response based on the input.
-    #
-    # WHY RESPONSES API INSTEAD OF CHAT COMPLETIONS?
-    #
-    # 1. It is the newer API recommended for new projects.
-    # 2. It offers a simple interface for this task:
-    #       instructions = system-level guidance
-    #       input = user content
-    # 3. It has broader support for future capabilities.
-    # 4. We can directly access generated text via output_text.
-    #
-    # IMPORTANT:
-    # Chat Completions also works for this project.
-    # Responses API does not automatically improve script quality.
-    # The prompt and model selection matter more here.
-
 
     # --------------------------------------------------------
     # 4C. EXTRACT THE GENERATED TEXT
@@ -137,9 +110,6 @@ def create_script(transcript):
     # The API returns a structured response object.
     # .output_text extracts its generated text.
     #
-    # Chat Completions uses a different syntax:
-    # response.choices[0].message.content
-
 
     # --------------------------------------------------------
     # 4D. VALIDATE THE OUTPUT
@@ -164,7 +134,3 @@ def create_script(transcript):
     # main.py can then pass this string to:
     # generate_audio(script)
     #
-    # IMPORTANT:
-    # return is different from print().
-    # return makes the result available to other functions.
-    # print() only displays it in the terminal.
