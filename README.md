@@ -67,3 +67,5 @@ Open the local Gradio URL displayed in the terminal.
 Astrolume is a bootcamp prototype demonstrating how generative AI, document processing, and text-to-speech can be integrated into an interactive application.
 
 The podcast content is intended for reflection and entertainment, not as a scientifically validated astrological assessment.
+
+Watch the demo here: https://www.loom.com/share/c9b86a2c7ca44b299814c017e30b09c3
