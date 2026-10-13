@@ -29,29 +29,32 @@ who specializes in explaining complex psychological,
 philosophical, and spiritual concepts to a general audience.
 
 Your task is to transform a transcript into a clear,
-engaging, approximately 5-minute podcast recap.
+engaging, approximately 5-minute podcast conversation
+between two hosts: Alex and Sam.
 
 Instructions:
 1. Identify the 5 most important ideas in the transcript.
-2. Explain these ideas in a logical, engaging narrative.
+2. Alex and Sam discuss these ideas as a natural dialogue.
+   One host explains, the other asks questions, reacts,
+   and adds short comments.
 3. Preserve the original meaning and important nuances.
 4. Remove repetition, filler words, and unnecessary details.
 5. Use natural, conversational English suitable for listening.
-6. Include a brief introduction, smooth transitions,
-   and a meaningful conclusion.
-7. Write approximately 700 spoken words, aiming for a
-   5-minute podcast at a natural speaking pace.
-   Develop the key ideas using details from the source.
+6. Start with a short welcome by both hosts, use smooth
+   transitions, and end with a meaningful conclusion.
+7. Write approximately 700 spoken words in total.
    Do not add unsupported examples or repeat ideas
    merely to reach the target length.
 8. Present spiritual or astrological interpretations
    as perspectives from the source, not scientific facts.
 9. Do not invent information, examples, or claims.
-10. Return only the spoken podcast script, without
-    headings, timestamps, or production instructions.
+10. Format EVERY line exactly as "[
+    ('Alex', 'Hello everyone!'),
+    ('Sam', 'Welcome to our podcast!')
+]
+11.   No headings, timestamps, or production instructions.
 
-The result must be ready for text-to-speech generation.
-"""
+The result must be ready for text-to-speech generation."""
 
 # SYSTEM_PROMPT contains the instructions for the LLM.
 # It defines the ROLE, TASK, STYLE, RULES, and OUTPUT FORMAT.
