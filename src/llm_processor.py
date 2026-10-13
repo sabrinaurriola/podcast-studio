@@ -107,25 +107,12 @@ def create_script(transcript):
 
     script = response.output_text
 
-    # The API returns a structured response object.
-    # .output_text extracts its generated text.
-    #
-
-    # --------------------------------------------------------
-    # 4D. VALIDATE THE OUTPUT
-    # --------------------------------------------------------
+    
 
     if not script or not script.strip():
         raise ValueError("The LLM returned an empty script.")
 
-    # Check that the model actually returned usable text.
-    # This prevents passing an empty script to the TTS module.
-
-
-    # --------------------------------------------------------
-    # 4E. RETURN THE SCRIPT
-    # --------------------------------------------------------
-
+    
     return script.strip()
 
     # return sends the result back to the calling function.
