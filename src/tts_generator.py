@@ -7,11 +7,13 @@ import re
 import textwrap
 import tempfile
 
+
 # Load API key from .env
 load_dotenv()
 
 # Initialize OpenAI client
 client = OpenAI()
+
 
 # Assign a different voice to each speaker
 VOICES = {
@@ -33,8 +35,14 @@ def split_script(script, max_chars=3000):
     current_chunk = ""
 
     for sentence in sentences:
+
         # Handle sentences longer than the limit
-        parts = textwrap.wrap(sentence, width=max_chars)
+        parts = textwrap.wrap(
+            sentence,
+            width=max_chars,
+            break_long_words=False,
+            break_on_hyphens=False
+        )
 
         for part in parts:
             combined = f"{current_chunk} {part}".strip()
@@ -42,7 +50,8 @@ def split_script(script, max_chars=3000):
             if len(combined) <= max_chars:
                 current_chunk = combined
             else:
-                chunks.append(current_chunk)
+                if current_chunk:
+                    chunks.append(current_chunk)
                 current_chunk = part
 
     # Add the last chunk
@@ -53,7 +62,7 @@ def split_script(script, max_chars=3000):
 
 
 def parse_dialogue(script):
-    """Identify speakers and extract their spoken text."""
+    """Identify Alex and Sam and extract their spoken text."""
 
     if not isinstance(script, str) or not script.strip():
         raise ValueError("Podcast script cannot be empty.")
@@ -61,14 +70,18 @@ def parse_dialogue(script):
     dialogue = []
 
     # Process each line of the podcast script
-    for line_number, line in enumerate(script.splitlines(), start=1):
+    for line_number, line in enumerate(
+        script.splitlines(), start=1
+    ):
+
         line = line.strip()
 
         # Skip empty lines
         if not line:
             continue
 
-        # Identify Alex or Sam
+        # UPDATED: Allow spaces around the speaker label
+        # and recognize Alex/Sam regardless of capitalization
         match = re.fullmatch(
             r"(Alex|Sam)\s*:\s*(.+)",
             line,
@@ -109,6 +122,9 @@ def generate_audio(script, output_path="outputs/recap.mp3"):
     # Create empty audio
     combined_audio = AudioSegment.empty()
 
+    # UPDATED: Add a short pause between speaker turns
+    pause = AudioSegment.silent(duration=300)
+
     # Store individual audio segments temporarily
     with tempfile.TemporaryDirectory() as temp_dir:
 
@@ -122,15 +138,18 @@ def generate_audio(script, output_path="outputs/recap.mp3"):
 
             # Generate speech for this speaker
             with client.audio.speech.with_streaming_response.create(
-                model="gpt-4o-mini-tts",
+                model="tts-1",
                 voice=voice,
-                input=text
+                input=text,
+                response_format="mp3"
             ) as response:
                 response.stream_to_file(chunk_path)
 
-            # Add segment to the combined podcast
+            # Load the generated MP3
             audio_chunk = AudioSegment.from_mp3(chunk_path)
-            combined_audio += audio_chunk
+
+            # Append audio and a short pause
+            combined_audio += audio_chunk + pause
 
         # Export the complete podcast
         combined_audio.export(output_file, format="mp3")
